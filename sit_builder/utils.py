@@ -31,7 +31,6 @@ def replace(file_path, pattern, subst):
 
 
 def add_app_to_settings(name, CURRENT_PATH):
-    created = 0
     for dirname in os.listdir(CURRENT_PATH):
         if isfile(join(CURRENT_PATH, dirname)) and re.match('common.py\\b', dirname):
             print "yazan please     " + dirname
