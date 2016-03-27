@@ -9,8 +9,9 @@ Detailed documentation is in the "docs" directory.
 
 Quick start
 -----------
+1. instal the package using "pip install git+git://github.com/ahmadiga/sit-builder.git"
 
-1. Add "sit-builder" to your INSTALLED_APPS setting like this::
+2. Add "sit-builder" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = [
         ...
