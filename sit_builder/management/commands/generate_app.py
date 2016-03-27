@@ -2,7 +2,7 @@ import os
 from os.path import join
 from subprocess import call
 from os import rename
-from sit_builder.utils import replace_app_template
+from sit_builder.utils import *
 from django.conf import settings
 
 from django.core.management.base import BaseCommand, CommandError
@@ -21,4 +21,5 @@ class Command(BaseCommand):
             call(["tar", "xvzf", join(package, "app_template.tar.gz"), "-C", CURRENT_PATH])
             rename(join(CURRENT_PATH, "app_template"), join(CURRENT_PATH, name))
             replace_app_template(join(CURRENT_PATH, name), name)
+            add_app_to_settings(name, CURRENT_PATH)
             self.stdout.write(self.style.SUCCESS('APP "%s" Created' % name))

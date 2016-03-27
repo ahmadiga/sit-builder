@@ -1,7 +1,8 @@
 import os
+import re
 from os import remove, close, rename
-from shutil import move
 from os.path import isfile, join
+from shutil import move
 from tempfile import mkstemp
 
 
@@ -27,3 +28,22 @@ def replace(file_path, pattern, subst):
     remove(file_path)
     # Move new file
     move(abs_path, file_path)
+
+
+def add_app_to_settings(name, CURRENT_PATH):
+    for dirname in os.listdir(CURRENT_PATH):
+        if isfile(join(CURRENT_PATH, dirname)) and re.match('(settings.py)', dirname):
+            my_file = open(CURRENT_PATH + '/' + name, "r")
+            searchlines = my_file.readlines()
+            my_file.close()
+            index = searchlines.count()
+            for i, line in enumerate(searchlines):
+                if line.__contains__('INSTALLED_APPS += ['):
+                    index = i + 1
+                    break
+            line_to_be_added = "   '" + name + "',"
+            searchlines.insert(index, line_to_be_added)
+            my_file = open(CURRENT_PATH + '/' + name, "w")
+            my_file.writelines(searchlines)
+            my_file.close()
+            break
