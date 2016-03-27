@@ -31,19 +31,29 @@ def replace(file_path, pattern, subst):
 
 
 def add_app_to_settings(name, CURRENT_PATH):
+    created = 0
     for dirname in os.listdir(CURRENT_PATH):
-        if isfile(join(CURRENT_PATH, dirname)) and re.match('(settings.py)', dirname):
-            my_file = open(CURRENT_PATH + '/' + name, "r")
+        if isfile(join(CURRENT_PATH, dirname)) and re.match('common.py\\b', dirname):
+            print "yazan please     " + dirname
+            my_file = open(CURRENT_PATH + '/' + dirname, "r")
             searchlines = my_file.readlines()
             my_file.close()
-            index = searchlines.count()
+            index = len(searchlines)
             for i, line in enumerate(searchlines):
                 if line.__contains__('INSTALLED_APPS += ['):
                     index = i + 1
-                    break
-            line_to_be_added = "   '" + name + "',"
-            searchlines.insert(index, line_to_be_added)
-            my_file = open(CURRENT_PATH + '/' + name, "w")
+            line_to_be_added = "   '" + name + "',\n"
+            if len(searchlines) == index:
+                searchlines.append("    INSTALLED_APPS += [")
+                searchlines.append(line_to_be_added)
+                searchlines.append("]")
+            else:
+                searchlines.insert(index, line_to_be_added)
+            my_file = open(CURRENT_PATH + '/' + dirname, "w")
             my_file.writelines(searchlines)
             my_file.close()
-            break
+            return 1
+        elif not isfile(join(CURRENT_PATH, dirname)):
+            if add_app_to_settings(name, join(CURRENT_PATH, dirname)):
+                break
+    return 0
